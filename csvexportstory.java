@@ -31,6 +31,5 @@ public class csvexportstory {
 				System.out.println(csv.get(i));
 		}
 		
-		System.out.println("OMG");
 	}
 }
