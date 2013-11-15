@@ -16,6 +16,7 @@ public class csvexportstory {
 		ArrayList<String> csv = new ArrayList();
 		String tempWord;
 		System.out.println("HIHIHIH");
+			System.out.println("HIHIHIH");
 		while (in.hasNext())
 		{
 			tempWord = in.nextLine();
