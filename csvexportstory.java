@@ -15,7 +15,7 @@ public class csvexportstory {
 		Scanner in = new Scanner(reader);
 		ArrayList<String> csv = new ArrayList();
 		String tempWord;
-		
+		System.out.println("HIHIHIH");
 		while (in.hasNext())
 		{
 			tempWord = in.nextLine();
