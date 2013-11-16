@@ -1,9 +1,5 @@
 package studentAttendance;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,7 +9,7 @@ public class studentAttendance {
 
         ArrayList<Student> studentList = new ArrayList<Student>();
         ArrayList<String> courseList = new ArrayList<String>();
-        Map<String, LinkedHashMap<String, String>> course = new LinkedHashMap<String, LinkedHashMap<String, String>>();
+      
         
         public void initCourses() {
             courseList.add("Programming Language");
@@ -37,10 +33,11 @@ public class studentAttendance {
             
      }
         
+        
         public void select(int s) throws InterruptedException {
                 Scanner scan = new Scanner(System.in);
 
-            	
+                    
                 switch (s) {
                 case 1:
                         int valid = 0;
@@ -53,14 +50,14 @@ public class studentAttendance {
                                 courseIndex = scan.nextInt();
 
                                 if (checkCourse(courseIndex)) {
-                                	valid++;
-                                	   coursea = courseList.get(courseIndex -1);
+                                        valid++;
+                                           coursea = courseList.get(courseIndex -1);
                                         while (valid == 1) {
                                                 getAllStudent();
                                                 System.out.println("Which Student ");
                                                 studn = scan.nextLine();
                                                 if (checkStudent(studn)) {
-                                                	valid++;
+                                                        valid++;
 
                                                         while (valid == 2) {
                                                                 System.out.println("What do you want to update? (Present | Absent | Late)");
@@ -69,7 +66,7 @@ public class studentAttendance {
                                                                 if (update.equals("Present")
                                                                                 || update.equals("Absent")
                                                                                 || update.equals("Late")) {
-                                                                		valid++;
+                                                                                valid++;
                                                                         editAttendance(studn, coursea, update);
                                                                 }
                                                         }
@@ -97,7 +94,7 @@ public class studentAttendance {
                         break;
 
                 case 4:
-                	valid = 0;
+                        valid = 0;
 
                         while (valid == 0) {
                                 displayAllCourse();
@@ -105,8 +102,8 @@ public class studentAttendance {
                                 courseIndex = scan.nextInt();
 
                                 if (checkCourse(courseIndex)) {
-                                	valid++;
-                                	coursea = courseList.get(courseIndex - 1);
+                                        valid++;
+                                        coursea = courseList.get(courseIndex - 1);
                                         while (valid == 1) {
                                                 displayAttendance(coursea);
                                                 System.out
@@ -114,7 +111,7 @@ public class studentAttendance {
                                                 studn = scan.nextLine();
 
                                                 if (checkStudent(studn)) {
-                                                	valid++;
+                                                        valid++;
                                                         markLate(coursea, studn);
                                                         displayAttendance(coursea);
                                                 } else {
@@ -130,7 +127,7 @@ public class studentAttendance {
 
                 case 5:
 
-                	valid = 0;
+                        valid = 0;
 
                         while (valid == 0) {
                                 displayAllCourse();
@@ -138,8 +135,8 @@ public class studentAttendance {
                                 courseIndex = scan.nextInt();
 
                                 if (checkCourse(courseIndex)) {
-                                	valid++;
-                                	coursea = courseList.get(courseIndex -1);
+                                        valid++;
+                                        coursea = courseList.get(courseIndex -1);
                                         viewSA(coursea);
                                 } else {
                                         System.out.println("Please try again.");
@@ -190,64 +187,58 @@ public class studentAttendance {
         }
 
         public void viewSA(String coursea) {
-                Map<String, String> session = course.get(coursea);
-
+        
                 for (Student n : studentList) {
-                        System.out.println(n + "   " + session.get(n));
+                	if(n.getCoursename().equals(coursea))
+                        System.out.println(n + "   " + n.getName() + "\t" + n.getCoursename() + "\t" + n.getAttendance());
                 }
         }
 
         public void markLate(String coursea, String studentn) {
-                Map<String, String> session = course.get(coursea);
-
-                session.remove(studentn);
-                session.put(studentn, "Late");
-
-                course.remove(coursea);
-                course.put(coursea, (LinkedHashMap<String, String>) session);
+                for(Student s : studentList){
+                	if(s.getName().equals(studentn) && s.getCoursename().equalsIgnoreCase(coursea))
+                		s.setAttendance("Late");	
+                }
         }
 
         public void displayAttendance(String courseName) {
-                Map<String, String> temp = course.get(courseName);
-
-                for (Student name : studentList) {
-                        System.out.println(name + " is " + temp.get(name) + " for "
-                                        + courseName);
-                }
+        	 for(Student s : studentList){
+        		 if(s.getCoursename().equalsIgnoreCase(courseName));
+        		 System.out.println(s.getName() + "\t" + s.getCoursename() + "\t" + s.getAttendance());
+        	 }
 
         }
 
         public void displayAllCourse() {
-        	if(courseList.size() > 0){
-        		  for (int i=0; i<courseList.size(); i++) {
+                if(courseList.size() > 0){
+                          for (int i=0; i<courseList.size(); i++) {
                       System.out.println(i+1 + ")" + courseList.get(i));
               }
-        	}else {
-        		System.out.println("No Courses has been added");
-        	}
+                }else {
+                        System.out.println("No Courses has been added");
+                }
               
         }
 
         public void editAttendance(String studentn, String coursea, String update) {
 
-                Map<String, String> session = course.get(coursea);
-                session.remove(studentn);
-                session.put(studentn, update);
-                course.remove(coursea);
-                course.put(coursea, (LinkedHashMap<String, String>) session);
+             for(Student s : studentList){
+            	 if(s.getName().equalsIgnoreCase(studentn) && s.getCoursename().equalsIgnoreCase(coursea)){
+            		 s.setAttendance(update);
+            	 }
+             }
         }
 
         
         
 
         public void getAllStudent() {
-        	initStudent();if(studentList.size() > 0){
-        	for (int i=0; i< studentList.size(); i++) {
-                        System.out.println("Student : " + studentList.get(i));
+        	
+                for (int i=0; i< studentList.size(); i++) {
+                	Student s = studentList.get(i);
+                        System.out.println("Student : " + s.getName());
                 }
-        	}else {
-        		System.out.println("No student has been added!");
-        	}
+               
         }
 
 
