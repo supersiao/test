@@ -1,4 +1,3 @@
-
 package hi;
 
 import java.util.ArrayList;
@@ -8,15 +7,19 @@ public class student {
 	private String name;
 	private String matricNo;
 	private String courseName;
-	private String setCoursename;
+	private String attendance;
 	
-public student(String name, String courseName, String matricNo){
+public student(String name, String courseName, String matricNo, String attendance){
 	
 	this.name = name;
 	this.matricNo = matricNo;
 	this.courseName = courseName;
 	
 }
+
+	public String getAttendance(){
+		return attendance;
+	}
 	
 	public String getName(){
 		return name;
@@ -42,10 +45,12 @@ public student(String name, String courseName, String matricNo){
 		
 	}
     
-	
+	public void setAttendance(String a){
+		this.attendance = a;
+	}
 	
 	public void setCoursename(String c){
-		this.setCoursename = c;
+		this.courseName = c;
 	}
 }
 
