@@ -24,10 +24,10 @@ public class studentAttendance {
         
         public void initStudent() {
             Student s1 = new Student("Jasmine Hu","Programming Language", "13AGC019Y","Present");
-            Student s2 = new Student("Yve", "Programming Language", 13AGC023Y", "Present");
+            Student s2 = new Student("Yve", "Programming Language", "13AGC023Y", "Present");
             Student s3 = new Student("Veronica ","Programming Language", "13AGC014J", "Absent");
-            Student s4 = new Student("Jiaxiong", "Advanced Programming Language", 13AGC010L", "Late");
-            Student s5 = new Student("Shiny", "Advanced Programming Language", 13AGC090L", "Present");
+            Student s4 = new Student("Jiaxiong", "Advanced Programming Language", "13AGC010L", "Late");
+            Student s5 = new Student("Shiny", "Advanced Programming Language", "13AGC090L", "Present");
             
             studentList.add(s1);
             studentList.add(s2);
