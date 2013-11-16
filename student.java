@@ -6,20 +6,18 @@ public class student {
 
 	private String name;
 	private String matricNo;
+	private String gender;
 	private String courseName;
-	private String attendance;
+	private String setCoursename;
 	
-public student(String name, String courseName, String matricNo, String attendance){
+public student(String name, String matricNo, String gender, String courseName){
 	
 	this.name = name;
 	this.matricNo = matricNo;
+	this.gender = gender;
 	this.courseName = courseName;
 	
 }
-
-	public String getAttendance(){
-		return attendance;
-	}
 	
 	public String getName(){
 		return name;
@@ -30,28 +28,30 @@ public student(String name, String courseName, String matricNo, String attendanc
 		return matricNo;
 	}
 	
-
+	public String getGender(){
+		return gender;
+	}
+	
 	public String getCoursename(){
 		return courseName;
 	
 	}
 	
-	public void setName(String name){
+	public void setName(){
 		this.name = name;
 	}
 	
-	public void setMatricno(String matricNo){
+	public void setMatricno(){
 		this.matricNo = matricNo;
 		
 	}
     
-	public void setAttendance(String a){
-		this.attendance = a;
+	public void setGender(){
+		this.gender = gender;	
 	}
 	
-	public void setCoursename(String c){
-		this.courseName = c;
+	public void setCoursename(){
+		this.setCoursename = courseName;
 	}
 }
-
 
