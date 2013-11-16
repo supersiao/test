@@ -2,7 +2,7 @@ package hi;
 
 import java.util.ArrayList;
 
-public class student {
+public class Student {
 
 	private String name;
 	private String matricNo;
@@ -10,7 +10,7 @@ public class student {
 	private String courseName;
 	private String setCoursename;
 	
-public student(String name, String matricNo, String gender, String courseName){
+public Student(String name, String matricNo, String gender, String courseName){
 	
 	this.name = name;
 	this.matricNo = matricNo;
