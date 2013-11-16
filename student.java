@@ -1,5 +1,4 @@
 
-
 package hi;
 
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ public class student {
 
 	private String name;
 	private String matricNo;
-	private String gender;
 	private String courseName;
 	private String setCoursename;
 	
@@ -16,7 +14,6 @@ public student(String name, String courseName, String matricNo){
 	
 	this.name = name;
 	this.matricNo = matricNo;
-	this.gender = gender;
 	this.courseName = courseName;
 	
 }
@@ -30,30 +27,25 @@ public student(String name, String courseName, String matricNo){
 		return matricNo;
 	}
 	
-	public String getGender(){
-		return gender;
-	}
-	
+
 	public String getCoursename(){
 		return courseName;
 	
 	}
 	
-	public void setName(){
+	public void setName(String name){
 		this.name = name;
 	}
 	
-	public void setMatricno(){
+	public void setMatricno(String matricNo){
 		this.matricNo = matricNo;
 		
 	}
     
-	public void setGender(){
-		this.gender = gender;	
-	}
 	
-	public void setCoursename(){
-		this.setCoursename = courseName;
+	
+	public void setCoursename(String c){
+		this.setCoursename = c;
 	}
 }
 
