@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,18 +18,23 @@ public class studentAttendance {
             Student s7 = new Student("Terence  ", "C02", "13AGC034L", "Present");
             Student s8 = new Student("Ting Wen ","C04", "13AGC012S","Present");
             Student s9 = new Student("Yuan Hui ", "C03", "13AGC091Y", "Present");
-            Student s10 = new Student("Ngai Fong", "C03", "13AGC012J", "Absent");
+            Student s10 = new Student("Ngai Fong", "C04", "13AGC012J", "Absent");
             
-           
+            Student s11 = new Student("Yuan Hui ", "C02", "13AGC091Y", "Present");
+            Student s12 = new Student("Ngai Fong", "C03", "13AGC012J", "Absent");
+            
             studentList.add(s1);
             studentList.add(s2);
             studentList.add(s3);
+            studentList.add(s4);
             studentList.add(s5);
             studentList.add(s6);
             studentList.add(s7);
             studentList.add(s8);
             studentList.add(s9);
             studentList.add(s10);
+            studentList.add(s11);
+            studentList.add(s12);
             
      }
         
@@ -133,6 +139,7 @@ public class studentAttendance {
                         printUI();
                         break;
                 }
+                scan.close();
         }
 
         public void printUI() throws NumberFormatException, InterruptedException {
@@ -160,7 +167,7 @@ public class studentAttendance {
                 } else {
                         printUI();
                 }
-
+                scan.close();
         }
         
         public void viewSA(int coursea) {
@@ -192,16 +199,24 @@ public class studentAttendance {
 
         
         public void getAllStudent() {
+        	ArrayList<Student> studentUnique = new ArrayList<Student>();
         	System.out.println("No   " + "   Student Name" + "\t" + "Student No");
-        	for(int i=0; i<studentList.size(); i++){
-        		if(studentList.get(i).getMatricno().equalsIgnoreCase(studentList.get(i).getMatricno()))
-        			System.out.println((i + 1) + "\t" + studentList.get(i).getName() + "\t" + studentList.get(i).getMatricno());
-        		
-                        
-                }
-               
+        	for(int i=0; i < studentList.size(); i++){
+        		for(int c = i + 1; c <studentList.size(); c++){
+        			if(studentList.get(i).getMatricno().equals(studentList.get(c).getMatricno())){
+        				studentUnique.add(studentList.get(c));
+        				studentList.remove(c);
+        			}
+        	}
+        		System.out.println((i + 1) + "\t" + studentList.get(i).getName() + "\t" + studentList.get(i).getMatricno());
+        
+        	}
+        	
+        	for(int u=0 ; u < studentUnique.size(); u++ ){
+        		studentList.add(studentUnique.get(u));
+        	}
         }
-
+        
         public static boolean isInteger(String str) {
                 int size = str.length();
 
@@ -215,7 +230,7 @@ public class studentAttendance {
         }
 
         public boolean checkStudent(String studentNo) {
-        	for(int i=0; i<studentList.size(); i++)
+        	for(int i=0; i<studentList.size();)
         	{
         			if(studentList.get(i).getMatricno().equalsIgnoreCase(studentNo))
         				return true;
@@ -229,6 +244,7 @@ public class studentAttendance {
         	Course courseName  = courseList.get(index -1);
         	return (courseList.contains(courseName));
         }
+   
        
         
 }
