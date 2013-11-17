@@ -1,4 +1,3 @@
-package hi;
 
 public class grades {
  private String grades;
