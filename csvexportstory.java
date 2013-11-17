@@ -10,31 +10,33 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class csvexportstory {
 	static ArrayList<Student> student = new ArrayList<Student>();
 	static ArrayList<Course> course = new ArrayList<Course>();
-	public static void main(String[] args) throws IOException {
-		Student s1 = new Student("Jasmine Hu","13AGC019Y","Programming Language 3","A");
-            	Student s2 = new Student("Yve","13AGC023Y","PSD 3","A");
-            	Student s3 = new Student("Veronica","13AGC014J","Algorithmic Language 3","A");
-            	Student s4 = new Student("Jiaxiong","13AGC010L","Advanced Programming Language 3","B");
-            	Student s5 = new Student("Shiny","13AGC090L","Advanced Programming Language 3","B");
-		
-		Course c1 = new Course("C01", "Programming Language 3");
-		Course c2 = new Course("C02", "PSD 3");
-		Course c3 = new Course("C03", "Algorithmic Language 3");
-		Course c4 = new Course("C04", "Advanced Programming Language 3");
 
-		student.add(s1);
-            	student.add(s2);
-            	student.add(s3);
-            	student.add(s4);
-            	student.add(s5);
-		
-		course.add(c1);
-		course.add(c2);
-		course.add(c3);
-		course.add(c4);
+	public void initStudent() {
+                 Student s1 = new Student("Jasmine Hu","13AGC019Y","Programming Language 3","A");
+                 Student s2 = new Student("Yve","13AGC023Y","PSD 3","A");
+                 Student s3 = new Student("Veronica","13AGC014J","Algorithmic Language 3","A");
+                 Student s4 = new Student("Jiaxiong","13AGC010L","Advanced Programming Language 3","B");
+                 Student s5 = new Student("Shiny","13AGC090L","Advanced Programming Language 3","B");
+                  
+                 student.add(s1);
+                 student.add(s2);
+                 student.add(s3);
+                 student.add(s4);
+                 student.add(s5);
+        }      
+        public void initCourse(){
+                Course c1 = new Course("C01", "Programming Language 3");
+                Course c2 = new Course("C02", "PSD 3");
+                Course c3 = new Course("C03", "Algorithmic Language 3");
+                Course c4 = new Course("C04", "Advanced Programming Language 3");
 
-                optPrint();
-	}
+                course.add(c1);
+                course.add(c2);
+                course.add(c3);
+                course.add(c4);
+
+                
+        }
 
 	public static boolean isInteger(String str) {
                 int size = str.length();
@@ -125,12 +127,9 @@ public class csvexportstory {
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Please choose something to do");
                 System.out.println(++i +".\t Import Course Information");
-                //System.out.println(++i +".\t Manually Insert Grades");
-                //System.out.println(++i +".\t View Single Course Grades");
                 System.out.println(++i +".\t Export All grades");
-		System.out.println(++i +".\t View All Course Grades");
+		System.out.println(++i +".\t View Single Course Grades");
                 System.out.println(++i +".\t Export student grades");
-                System.out.println(++i +".\t Export subject grades");
 		System.out.println("0.\t End");
                 //System.out.println(++i +".\t Edit student grades");
                 //System.out.println(++i +".\t Delete grades");
@@ -146,17 +145,46 @@ public class csvexportstory {
 
                 return false;
         }
+
 	
-	 public static void menu(int choice){
+
+        public static boolean checkCourse(String courseName) {
+		boolean courseExist = false;
+		for (Course c : course) {
+			if(c.getCourseName().equals(courseName))
+			{
+				courseExist = true;
+				break;
+			}				
+		}
+                return courseExist;
+        }
+
+	public static boolean checkStudent(String studentName) {
+                boolean studentExist = false;
+		for (Student s : student) {
+			if(s.getName().equals(studentName))
+			{
+				studentExist = true;
+				break;
+			}				
+		}
+                return studentExist;
+        }
+
+
+        public static void menu(int choice){
                 Scanner scan = new Scanner(System.in);
                 String file = "";
                 String path = "";
+		String course = "";
+		String student = "";
                 
                 switch (choice) {
                 case 1:
 			JFrame j = new JFrame();
                         j.toFront();
-                        System.out.println("Please wait while the file selector is loading, dont not type while loading!!");
+                        System.out.println("Please wait while the file selector is loading, do not type while loading!!");
                         file = saveMap(j);
                         j.toBack();
                 	j.dispose();
@@ -178,73 +206,46 @@ public class csvexportstory {
                         optPrint();
 
                         break;
+		case 3:
+                        courseExisted();
 
-                /*case 2:
-                        mInsertGrade();
-                        printUI();
-                        break;
-
-
-                case 3:
-                        displayCourse();
                         System.out.println("Enter the course you want to view!");
-                        ans = scan.nextLine();
+                        course = scan.nextLine();
 
-
-                        displayCourseGrade(ans);
-                        printUI();
+                        if (checkCourse(course)) 
+			{
+			        System.out.println("Enter the path u want to export the path.");
+                        	path = scan.nextLine();
+                       	     	exportCourseGrade(course, path);
+                        } 
+			else 
+			{
+                             System.out.println("Course not existed.");
+                        }
+                     
+                        optPrint();
                         break;
 
+		case 4:
+                        studentExisted();
 
-                case 4:
-                        displayAllCourseGrade();
-                        printUI();
-                        break;
-                        
+                        System.out.println("Enter the student name that you want to view his/her grade!");
+                        student = scan.nextLine();
 
-                case 6:
-                        displayStudent();
-                        System.out.println("Which student's grade do you want to export?");
-                        ans = scan.nextLine();
+			if (checkStudent(student)) 
+			{
+                             System.out.println("Enter the path u want to export the path.");
+                             path = scan.nextLine();
+			     exportStudentGrade(student, path);
+                        } 
+			else 
+			{
+                             System.out.println("student not existed.");
+                        }
                         
-                        exportStudentGrade(ans);
-                        printUI();
+                        optPrint();
                         break;
-                        
-                case 7:
-                        displayCourse();
-                        System.out.println("Which course grade do you want to export?");
-                        ans = scan.nextLine();
-                        
-                        exportGrade(ans);
-                        printUI();
-                        break;
-                        
-                case 8: 
-                        displayCourse();
-                        System.out.println("Which course do you want to edit?");
-                        String c = scan.nextLine();
-                        
-                        displayStudent();
-                        System.out.println("Which student do you want to edit the grade?");
-                        String s = scan.nextLine();
-                        
-                        System.out.println("What grade is he suppose to have?");
-                        ans = scan.nextLine();
-                        
-                        editCourse(c, s, ans);
-                        printUI();
-                        break;
-                        
-                case 9:
-                        displayCourse();
-                        System.out.println("Which course do you want to delete?");
-                        ans = scan.nextLine();
-                        
-                        deleteCourse(ans);
-                        printUI();
-                        break;*/
-                        
+               
                 case 0:
                         System.out.println("End Program!");
                         break;
@@ -257,8 +258,67 @@ public class csvexportstory {
 
                 }
         }
+	public static void courseExisted() {
+		for (Course c : course) {
+			System.out.println(c.getCourseName());			
+		}
+        }
 
-	public static boolean exportAllGrade(String path) {
+	public static void studentExisted() {
+                for (Student s : student) {
+                        System.out.println(s.getName());
+                }
+        }
+
+	public static void exportCourseGrade(String c, String url) {
+		try {
+			String urls = url + "Course.csv";
+                        FileWriter writer = new FileWriter(urls);
+			for (Student s : student) {
+				if(s.getCoursename().equals(c))
+				{	
+					writer.append(s.getName() + "," + s.getMatricno() + "," + s.getCoursename() + "," + s.getGrade() 						+ "\n");
+				}
+			}
+			writer.append("\n");
+			writer.flush();
+                        writer.close();
+                        System.out.println("The grade has been successfully exported to " + url);
+		    } 
+		    catch (IOException e) 
+		    {
+                        System.out.println("Read File Fail..");
+                    }
+        }
+
+	 public static boolean exportStudentGrade(String studentName, String url) {
+                try {
+			String urls = url + studentName + ".csv";
+                        FileWriter writer = new FileWriter(urls);
+
+                        for (Student s : student) 
+			{
+                                if (s.getName().equals(studentName)) 
+				{               
+                                      writer.append(s.getName() + "," + s.getMatricno() + "," + s.getCoursename() + "," + s.getGrade() 						+ "\n");
+                                }
+                        }
+
+			writer.append("\n");
+                        writer.flush();
+                        writer.close();
+                        System.out.println("The student has been successfully exported to "+ url);
+                        return true;
+
+                } catch (IOException e) 
+		{
+                        System.out.println("Read File Fail..");
+                        return false;
+                }
+        }
+
+
+	public static void exportAllGrade(String path) {
 		Scanner scan = new Scanner(System.in);
                 String url = path + "all.csv";
                 try {
@@ -318,17 +378,14 @@ public class csvexportstory {
 		                        }
 				}
                         }
-			System.out.println("weewee");
                         writer.append("\n");
                         // generate whatever data you want
 
                         writer.flush();
                         writer.close();
                         System.out.println("The grade for has been successfully exported to " + url);
-                        return true;
                 } catch (IOException e) {
                         System.out.println("Read File Fail..");
-                        return false;
                 }
         }
 
