@@ -53,7 +53,7 @@ public Student(String name, String courseID, String matricNo, String attendance)
         }
 
         public String toString() {
-        	   return this.name + "\t" + this.getID() + "\t" + this.getMatricno() +"\t" + this.getAttendance() ;
+        	   return this.name + "\t" + this.getID() + "\t\t" + this.getMatricno() +"\t" + this.getAttendance() ;
         	   
         	}
 }
