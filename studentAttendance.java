@@ -8,18 +8,18 @@ public class studentAttendance {
         
         public void initStudent() {
             Student s1 = new Student("Jasmine Hu","C01" , "13AGC019Y","Present");
-            Student s2 = new Student("Yve       ","C01" , "13AGC023Y", "Present");
+            Student s2 = new Student("Yve       ","C03" , "13AGC023Y", "Present");
             Student s3 = new Student("Veronica ","C01", "13AGC014J", "Absent");
             Student s4 = new Student("Jiaxiong", "C01" , "13AGC010L", "Present");
-            Student s5 = new Student("Shiny   ", "C01", "13AGC090L", "Present");
+            Student s5 = new Student("Shiny   ", "C02", "13AGC090L", "Present");
             
-            Student s6 = new Student("Maoxiong", "C02", "13AGC015H", "Late");
+            Student s6 = new Student("Jiaxiong", "C02", "13AGC010L", "Late");
             Student s7 = new Student("Terence  ", "C02", "13AGC034L", "Present");
-            Student s8 = new Student("Ting Wen ","C02", "13AGC012S","Present");
-            Student s9 = new Student("Yuan Hui ", "C02", "13AGC091Y", "Present");
-            Student s10 = new Student("Ngai Fong", "C02", "13AGC012J", "Absent");
+            Student s8 = new Student("Ting Wen ","C04", "13AGC012S","Present");
+            Student s9 = new Student("Yuan Hui ", "C03", "13AGC091Y", "Present");
+            Student s10 = new Student("Ngai Fong", "C03", "13AGC012J", "Absent");
             
-            
+           
             studentList.add(s1);
             studentList.add(s2);
             studentList.add(s3);
@@ -55,36 +55,30 @@ public class studentAttendance {
                 case 1:
                         int valid = 0;
                         int courseIndex = 0;
-                        String studn = null;
-                        String courseName = null;
-                        String studentName = null;
-                        int studentIndex = 0;
+                        String studentNo = null;
                         while (valid == 0) {
                                 displayAllCourse();
                                 System.out.println("Please enter which course you want to edit?");
                                 courseIndex = scan.nextInt();
                                 
                                 if (checkCourse(courseIndex)) {
-                                	courseName = courseList.get(courseIndex -1).getCourseName();
-                                        valid++;
-                                        
+                                        valid++;    
                                         while (valid == 1) {
-                                                getAllStudent();
-                                                System.out.println("Which Student ");
-                                                studentIndex = scan.nextInt();
-                                                if (checkStudent(studentIndex)) {
-                                                	studentName = studentList.get(studentIndex -1).getName();
+                                               // getAllStudent();
+                                        		viewSA(courseIndex);
+                                                System.out.println("Which Student? Please key in the Student No.");
+                                                studentNo = scan.next();
+                                                if (checkStudent(studentNo)) {
                                                         valid++;
-                                                        
                                                         while (valid == 2) {
                                                                 System.out.println("What do you want to update? (Present | Absent | Late)");
-                                                                String update = scan.nextLine();
+                                                                String update = scan.next();
 
                                                                 if (update.equalsIgnoreCase("Present")
                                                                                 || update.equalsIgnoreCase("Absent")
                                                                                 || update.equalsIgnoreCase("Late")) {
                                                                                 valid++;
-                                                                        editAttendance(studentName, courseIndex, update);
+                                                                        editAttendance(studentNo, courseIndex, update);
                                                                 }
                                                         }
                                                 } else {
@@ -171,35 +165,26 @@ public class studentAttendance {
         
         public void viewSA(int coursea) {
         	String courNameID = courseList.get(coursea -1).getCourseID();
+        	System.out.println("Student Name" + "\t" + "Course Code" + "\t" + "Student No" + "\t" + "Attendance");
         	for(int i=0; i<studentList.size(); i++){
         			if(studentList.get(i).getID().equals(courNameID))
                         System.out.println(studentList.get(i).toString());
         	}
         }
 
-        
-        public void displayAttendance(int courseIndex) {
-        	String c = courseList.get(courseIndex).getCourseID();
-        	for(int i=0; i<studentList.size(); i++){
-        		 if(studentList.get(i).getID().equalsIgnoreCase(c));
-        		 System.out.println(studentList.get(i).toString());
-        	 }
-
-        }
 
         public void displayAllCourse() {
-             
+        	System.out.println("No " + "  Course Code" + "\t" + "Course Name");
         	for(int i=0; i < courseList.size(); i++){
   
-        		System.out.println((i + 1) + "\t" + courseList.get(i).getCourseName());
+        		System.out.println((i + 1) + "\t" + courseList.get(i).toString());
         	}
               
         }
-     public void editAttendance(String studentn, int coursea, String update) {
+     public void editAttendance(String studentNo, int coursea, String update) {
     	 	String c = courseList.get(coursea -1).getCourseID();
-    	 	System.out.println(c);
         	for(int i=0; i<studentList.size(); i++){
-            	 if(studentList.get(i).getName().equalsIgnoreCase(studentn) && studentList.get(i).getID().equals(c)){
+            	 if(studentList.get(i).getMatricno().equalsIgnoreCase(studentNo) && studentList.get(i).getID().equals(c)){
             			 studentList.get(i).setAttendance(update);
             	 }
              }
@@ -207,6 +192,7 @@ public class studentAttendance {
 
         
         public void getAllStudent() {
+        	System.out.println("No   " + "   Student Name" + "\t" + "Student No");
         	for(int i=0; i<studentList.size(); i++){
         		if(studentList.get(i).getMatricno().equalsIgnoreCase(studentList.get(i).getMatricno()))
         			System.out.println((i + 1) + "\t" + studentList.get(i).getName() + "\t" + studentList.get(i).getMatricno());
@@ -228,9 +214,15 @@ public class studentAttendance {
                 return size > 0;
         }
 
-        public boolean checkStudent(int studentIndex) {
-        	Student s = studentList.get(studentIndex -1);
-                return (studentList.contains(s));
+        public boolean checkStudent(String studentNo) {
+        	for(int i=0; i<studentList.size(); i++)
+        	{
+        			if(studentList.get(i).getMatricno().equalsIgnoreCase(studentNo))
+        				return true;
+        			else
+        				return false;
+        	}
+                return false;
         }
         
         public boolean checkCourse(int index){
