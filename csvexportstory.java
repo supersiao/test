@@ -8,13 +8,31 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class csvexportstory {
-	static ArrayList<String> student = new ArrayList<String>();
-        static ArrayList<String> course = new ArrayList<String>();
-	static Map<String, LinkedHashMap<String, String>> grade = new LinkedHashMap<String, LinkedHashMap<String, String>>();
-
+	static ArrayList<Student> student = new ArrayList<Student>();
+	static ArrayList<Course> course = new ArrayList<Course>();
 	public static void main(String[] args) throws IOException {
+		Student s1 = new Student("Jasmine Hu","13AGC019Y","Programming Language 3","A");
+            	Student s2 = new Student("Yve","13AGC023Y","PSD 3","A");
+            	Student s3 = new Student("Veronica","13AGC014J","Algorithmic Language 3","A");
+            	Student s4 = new Student("Jiaxiong","13AGC010L","Advanced Programming Language 3","B");
+            	Student s5 = new Student("Shiny","13AGC090L","Advanced Programming Language 3","B");
+		
+		Course c1 = new Course("C01", "Programming Language 3");
+		Course c2 = new Course("C02", "PSD 3");
+		Course c3 = new Course("C03", "Algorithmic Language 3");
+		Course c4 = new Course("C04", "Advanced Programming Language 3");
 
-		student.add("JiaXiong");
+		student.add(s1);
+            	student.add(s2);
+            	student.add(s3);
+            	student.add(s4);
+            	student.add(s5);
+		
+		course.add(c1);
+		course.add(c2);
+		course.add(c3);
+		course.add(c4);
+
                 optPrint();
 	}
 
@@ -38,43 +56,45 @@ public class csvexportstory {
 
                 try {
                         String word;
-
                         br = new BufferedReader(new FileReader(url));
-
+			
                         while ((word = br.readLine()) != null) {
+				boolean studentExist = false;
+				String[] tempWordArr= word.split(",");
+				
+				for (Student s : student) 
+				{
+					 if (s.getName().equals(tempWordArr[0])) 
+					 {
+						System.out.println("equal");
+						studentExist = true;
+					 }
+					 if(studentExist)
+					 {
+						System.out.println("break");
+						break;
+					 }
+				}
+				if(!studentExist)
+				{		
+				        System.out.println("Student Not Found in the current database");
+				        System.out.println("Do you want to add " + tempWordArr[0] + " into the student database? (yes | no)");
+				        String add = scan.nextLine();
 
-                                if (!student.contains(word)) {
-                                        System.out.println("Student Not Found in the current database");
-                                        System.out.println("Do you want to add " + word + " into the student database? (yes | no)");
-                                        String add = scan.nextLine();
-
-                                        if (add.toLowerCase().equals("yes") || add.toLowerCase().equals("y")) 
+				        if (add.toLowerCase().equals("yes") || add.toLowerCase().equals("y")) 
 					{
-                                                student.add(word);
+						Student newStudent = new Student(tempWordArr[0],tempWordArr[1], tempWordArr[2],tempWordArr[3]);
+						student.add(newStudent);
 						System.out.println("Student added to database");
-						System.out.println("Enter the course name?");
-                       				courseStr = scan.nextLine();
-						System.out.println("Enter the course grade?");
-                       				gradeStr = scan.nextLine();
-						session.put(word, gradeStr);
-                                        } 
+		                        } 
 					else {
-                                                System.out.println("Student not added to database");
-                                        }
-
-                                } 
-				else {
-					System.out.println(word + " already exist in database");
-					System.out.println("Enter the course name?");
-                       			courseStr = scan.nextLine();
-					System.out.println("Enter the course grade?");
-                       			gradeStr = scan.nextLine();
-                                        session.put(word, gradeStr);
-                                        System.out.println(word + " added");
-                                }
-				course.add(courseStr);
-                        	grade.put(courseStr, (LinkedHashMap<String, String>) session);
-                        	System.out.println("The grade has been entered into the system!");
+		                                System.out.println("Student not added to database");
+		                        }
+		                } 
+				else 
+				{
+					System.out.println(tempWordArr[0] + " already exist in database");
+		                }
                         }
 
                         return true;
@@ -98,18 +118,22 @@ public class csvexportstory {
 	public static boolean optPrint() {
                 Scanner scan = new Scanner(System.in);
                 int i = 0;
+		System.out.println("--------------------------------------------------------");
+                System.out.println("|                                                       |");
+                System.out.println("|              Student Grade Export System!             |");
+                System.out.println("|                                                       |");
+                System.out.println("--------------------------------------------------------");
                 System.out.println("Please choose something to do");
                 System.out.println(++i +".\t Import Course Information");
                 //System.out.println(++i +".\t Manually Insert Grades");
                 //System.out.println(++i +".\t View Single Course Grades");
-                System.out.println(++i +".\t View All Course Grades");
                 System.out.println(++i +".\t Export All grades");
+		System.out.println(++i +".\t View All Course Grades");
                 System.out.println(++i +".\t Export student grades");
                 System.out.println(++i +".\t Export subject grades");
+		System.out.println("0.\t End");
                 //System.out.println(++i +".\t Edit student grades");
                 //System.out.println(++i +".\t Delete grades");
-                System.out.println("0.\t End");
-
 
                 System.out.println("Select the choice: ");
                 String choice = scan.nextLine();
@@ -146,7 +170,7 @@ public class csvexportstory {
                         importCourseInfor(file);
                         optPrint();
                         break;
-		case 3:
+		case 2:
                         System.out.println("Enter the path u want to export the path.");
                         path = scan.nextLine();
 
@@ -234,21 +258,68 @@ public class csvexportstory {
                 }
         }
 
-	 public static boolean exportAllGrade(String path) {
+	public static boolean exportAllGrade(String path) {
+		Scanner scan = new Scanner(System.in);
                 String url = path + "all.csv";
                 try {
                         FileWriter writer = new FileWriter(url);
-                        for (String c : course) {
-                                Map<String, String> session = grade.get(c);
-                                writer.append("Course: " + c + "\n");
-                                for (String name : student) {
-                                        if (session.containsKey(name)) {
-                                                writer.append(name + "," + session.get(name) + "," + c + "\n");
-                                        }
-                                }
-                                writer.append("\n");
-                        }
+			String courseExported = "";
+                        for (Student s : student) {
+				int i =0;
+				boolean courseEqual = false;
+                                String courseStr = s.getCoursename();
+				for (Course c : course) {
+					if(c.getCourseName().equals(courseStr))
+					{
+						courseEqual = true;
+						courseExported = c.getCourseExported();
+						break;
+					}
+					i++;				
+				}
+				if(courseEqual)
+				{
+					if(courseExported.toLowerCase().equals("no"))
+					{
+						course.get(i).setCourseExported("yes");
+						writer.append(course.get(i).toString() + "\n");
+						for (Student s1 : student) {
+							if(s1.getCoursename().equals(courseStr))
+							{	
+								writer.append(s1.getName() + "," + s1.getMatricno() + "," + s1.getCoursename() + "," + s1.getGrade() + "\n");
+							}
+						}
+						writer.append("\n");
+					}
+				}
+				else
+				{
+					System.out.println("Course Not Found in the current database");
+				        System.out.println("Do you want to add " + courseStr + " into the course database? (yes | no)");
+				        String add = scan.nextLine();
 
+				        if (add.toLowerCase().equals("yes") || add.toLowerCase().equals("y")) 
+					{
+						Course newCourse = new Course("C0" + (course.size() + 1), courseStr);
+						newCourse.setCourseExported("yes");
+						course.add(newCourse);
+						System.out.println("Course added to database");
+						writer.append(course.get(i).toString() + "\n");
+						for (Student s2 : student) {
+							if(s2.getCoursename().equals(courseStr))
+							{	
+								writer.append(s2.getName() + "," + s2.getMatricno() + "," + s2.getCoursename() + "," + s2.getGrade() + "\n");
+							}
+						}
+						writer.append("\n");
+		                        } 
+					else {
+		                                System.out.println("Course not added to database");
+		                        }
+				}
+                        }
+			System.out.println("weewee");
+                        writer.append("\n");
                         // generate whatever data you want
 
                         writer.flush();
