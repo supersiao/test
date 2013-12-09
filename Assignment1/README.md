@@ -1,7 +1,7 @@
 **Sprint 1**
 =============
 
-We have two folders for two user stories, the CSV Export Story and the Attendance Monitoring Story.
+We have two folders for two user stories, the Student Grade and Student Attendance.
 
 CSV Export Story
 ----------------
