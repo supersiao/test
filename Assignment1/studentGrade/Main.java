@@ -1,3 +1,5 @@
+package studentAttendance;
+
 import java.util.Scanner;
 
 public class Main {
@@ -22,7 +24,7 @@ public class Main {
 
                 if (username.equals("admin") && password.equals("password")) {
 
-                //
+                
                 //studentAttendance sa = new studentAttendance();
                 //sa.initStudent();
                 //sa.initCourse();

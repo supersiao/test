@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package studentAttendance;
+
 
 public class Student {
 

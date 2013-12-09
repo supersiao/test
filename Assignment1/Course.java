@@ -1,3 +1,5 @@
+package studentAttendance;
+
 public class Course {
 	
 	private String courseID;
@@ -28,7 +30,7 @@ public void setCourseName(String cN){
 }
 
 public String toString() {
-	   return this.getCourseID() + "\t\t " + this.getCourseName() ;
+	   return this.getCourseID() + "\t\t" + this.getCourseName() ;
 	   
 	}
 

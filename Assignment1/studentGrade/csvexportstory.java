@@ -1,3 +1,4 @@
+package studentAttendance;
 import java.io.*;
 import java.util.*;
 import java.io.FileWriter;

@@ -1,6 +1,17 @@
+package studentAttendance;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class studentAttendance {
 
@@ -55,10 +66,28 @@ public class studentAttendance {
       
         public void select(int s) throws InterruptedException {
                 Scanner scan = new Scanner(System.in);
-                
+                String file;
                 
                 switch (s) {
+                
                 case 1:
+                    JFrame j = new JFrame();
+                    j.toFront();
+                    System.out.println("Please wait while the file selector is loading, do not type while loading!!");
+                    file = saveMap(j);
+                    j.toBack();
+                    j.dispose();
+                    
+                     if (file == null) {
+                            System.out.println("No file is being selected.");
+                            printUI();
+                            break;
+                    }
+
+                    importStudentInfor(file);
+                    printUI();
+                    break;
+                case 2:
                         int valid = 0;
                         int courseIndex = 0;
                         String studentNo = null;
@@ -70,7 +99,6 @@ public class studentAttendance {
                                 if (checkCourse(courseIndex)) {
                                         valid++;    
                                         while (valid == 1) {
-                                               // getAllStudent();
                                         		viewSA(courseIndex);
                                                 System.out.println("Which Student? Please key in the Student No.");
                                                 studentNo = scan.next();
@@ -100,17 +128,17 @@ public class studentAttendance {
                         break;
 
                
-                case 2:
+                case 3:
                         getAllStudent();
                         printUI();
                         break;
 
-                case 3:
+                case 4:
                         displayAllCourse();
                         printUI();
                         break;
 
-                case 4:
+                case 5:
 
                         valid = 0;
 
@@ -139,10 +167,11 @@ public class studentAttendance {
                         printUI();
                         break;
                 }
-                scan.close();
+                //scan.close();
         }
 
-        public void printUI() throws NumberFormatException, InterruptedException {
+
+		public void printUI() throws NumberFormatException, InterruptedException {
 
                 int i = 0;
                 Scanner scan = new Scanner(System.in);
@@ -152,6 +181,7 @@ public class studentAttendance {
                 System.out.println("|                                                     |");
                 System.out.println("------------------------------------------------------");
                 System.out.println("Please select an option");
+                System.out.println(++i + ".\t Import attendance");
                 System.out.println(++i + ".\t Edit attendance");
                 System.out.println(++i + ".\t Display a list of student");
                 System.out.println(++i + ".\t Display a list of sessions");
@@ -167,9 +197,79 @@ public class studentAttendance {
                 } else {
                         printUI();
                 }
-                scan.close();
+                //scan.close();
         }
         
+        
+        public static boolean importStudentInfor(String url) {
+            Scanner scan = new Scanner(System.in);
+            Map<String, String> session = new LinkedHashMap<String, String>();
+            String courseStr = "", attendStr = "";
+            BufferedReader br = null;
+
+            try {
+                    String word;
+                    br = new BufferedReader(new FileReader(url));
+                    
+                    while ((word = br.readLine()) != null) {
+                            boolean studentExist = false;
+                            String[] tempWordArr= word.split(",");
+                            
+                            for (Student s : studentList) 
+                            {
+                                     if (s.getName().equals(tempWordArr[0])) 
+                                     {
+                                            System.out.println("exist");
+                                            studentExist = true;
+                                     }
+                                     if(studentExist)
+                                     {
+                                            System.out.println("break");
+                                            break;
+                                     }
+                            }
+                            if(!studentExist)
+                            {                
+                                    System.out.println("Student Not Found in the current database");
+                                    System.out.println("Do you want to add " + tempWordArr[0] + " into the student database? (yes | no)");
+                                    String add = scan.nextLine();
+
+                                    if (add.toLowerCase().equals("yes") || add.toLowerCase().equals("y")) 
+                                    {
+                                            Student newStudent = new Student(tempWordArr[0],tempWordArr[1], tempWordArr[2],tempWordArr[3]);
+                                            studentList.add(newStudent);
+                                            System.out.println("Student added to database");
+                                    } 
+                                    else {
+                                            System.out.println("Student not added to database");
+                                    }
+                            } 
+                            else 
+                            {
+                                    System.out.println(tempWordArr[0] + " already exist in database");
+                            }
+                    }
+                    //scan.close();
+                    return true;
+            } catch (IOException e) {
+
+                    System.out.println("IO Exception");
+                    return false;
+
+            } finally {
+                    try 
+                    {
+                         if (br != null)
+                               br.close();
+                    } catch (IOException ex) 
+                    {
+                            ex.printStackTrace();
+                            return false;
+                    }
+            }
+    }
+        
+
         public void viewSA(int coursea) {
         	String courNameID = courseList.get(coursea -1).getCourseID();
         	System.out.println("Student Name" + "\t" + "Course Code" + "\t" + "Student No" + "\t" + "Attendance");
@@ -230,21 +330,43 @@ public class studentAttendance {
         }
 
         public boolean checkStudent(String studentNo) {
-        	for(int i=0; i<studentList.size();)
+        	boolean check = false;
+        	for(int i=0; i<studentList.size(); i++)
         	{
-        			if(studentList.get(i).getMatricno().equalsIgnoreCase(studentNo))
-        				return true;
-        			else
-        				return false;
+        			if(studentList.get(i).getMatricno().equalsIgnoreCase(studentNo)){
+        				check = true;
+        			}	
+        				
         	}
-                return false;
+        	
+        	return check;
+              
         }
         
         public boolean checkCourse(int index){
         	Course courseName  = courseList.get(index -1);
         	return (courseList.contains(courseName));
         }
+        
+        public static String saveMap(JFrame f) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File("/home/username/Desktop/PSD3/"));
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV","csv");
+            chooser.setFileFilter(filter);
+            chooser.setDialogTitle("Choose a file");  
+                   chooser.setVisible(true);  
+            int retrival = chooser.showOpenDialog(f);
+            if (retrival == JFileChooser.APPROVE_OPTION) {
+                    try {
+                            return chooser.getSelectedFile().getAbsolutePath();
+
+
+                    } catch (Exception ex) {
+                            ex.printStackTrace();
+                    }
+            }
+            return null;
+    }
+}
    
        
-        
-}
